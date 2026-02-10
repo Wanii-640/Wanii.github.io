@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>For You ❤️</title>
+<style>
+body{
+  text-align:center;
+  font-family:sans-serif;
+  margin-top:100px;
+}
+button{
+  padding:10px 20px;
+  font-size:18px;
+  margin:10px;
+}
+</style>
+</head>
+
+<body>
+<h1>เป็นแฟนกับเราไหม 💖</h1>
+
+<button onclick="yes()">Yes</button>
+<button id="no" onmouseover="move()">No</button>
+
+<script>
+function yes(){
+  document.body.innerHTML="<h1>เย้! เราก็ชอบเธอ 🥰</h1>";
+}
+
+function move(){
+  const btn=document.getElementById("no");
+  btn.style.position="absolute";
+  btn.style.left=Math.random()*80+"%";
+  btn.style.top=Math.random()*80+"%";
+}
+</script>
+
+</body>
+</html>

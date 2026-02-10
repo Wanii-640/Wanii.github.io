@@ -2,64 +2,122 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>For You ❤️</title>
+<title>For You 💘</title>
 
 <style>
 body{
-  text-align:center;
+  margin:0;
+  height:100vh;
+  overflow:hidden;
   font-family:sans-serif;
-  margin-top:80px;
+  background:#fff0f5;
 }
 
 h1{
+  text-align:center;
+  padding-top:20px;
   color:#ff4d6d;
 }
 
-#game button{
-  font-size:32px;
+#timer{
+  text-align:center;
+  font-size:18px;
+  color:#555;
+}
+
+.heart{
+  position:absolute;
+  font-size:36px;
   background:none;
   border:none;
-  cursor:pointer;
-  margin:10px;
 }
 
 #message{
-  margin-top:40px;
-  font-size:28px;
+  position:fixed;
+  inset:0;
+  background:#fff0f5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-size:22px;
   color:#ff4d6d;
+  padding:30px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>เก็บหัวใจให้ครบ 5 ดวง 💖</h1>
+<h1>Catch all the hearts 💖</h1>
+<div id="timer">Time left: 10</div>
 
-<div id="game"></div>
-
-<div id="message"></div>
+<div id="message" style="display:none;"></div>
 
 <script>
 let score = 0;
-const total = 5;
+let timeLeft = 10;
+const total = 7;
 
-function collect(){
-  score++;
-  if(score === total){
-    document.getElementById("message").innerHTML =
-      "You unlocked my heart 💘<br>เราชอบเธอนะ";
-  }
+function randomPos(){
+  return Math.random() * 80 + "%";
 }
 
-// สร้างหัวใจ
-for(let i=0;i<total;i++){
+function createHeart(){
   const heart = document.createElement("button");
+  heart.className = "heart";
   heart.innerHTML = "❤️";
-  heart.onclick = function(){
-    collect();
-    heart.style.display = "none";
+  heart.style.left = randomPos();
+  heart.style.top = randomPos();
+
+  heart.onclick = () => {
+    score++;
+    heart.remove();
+    if(score === total){
+      win();
+    }
   };
-  document.getElementById("game").appendChild(heart);
+
+  document.body.appendChild(heart);
+}
+
+for(let i=0;i<total;i++){
+  createHeart();
+}
+
+const timer = setInterval(()=>{
+  timeLeft--;
+  document.getElementById("timer").innerText =
+    "Time left: " + timeLeft;
+
+  if(timeLeft === 0){
+    clearInterval(timer);
+    lose();
+  }
+},1000);
+
+function win(){
+  clearInterval(timer);
+  showMessage(`
+    Happy Valentine’s Day 💘<br><br>
+    I hope you feel better today.<br>
+    And I hope… your Valentine can be me too.<br>
+    Love you na ka 🤍<br><br>
+  `);
+}
+
+function lose(){
+  showMessage(`
+    It’s okay 🤍<br><br>
+    You can try again…<br>
+    I’ll still be here 💕
+  `);
+}
+
+function showMessage(text){
+  const msg = document.getElementById("message");
+  msg.innerHTML = text;
+  msg.style.display = "flex";
 }
 </script>
 

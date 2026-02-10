@@ -1,37 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>For You ❤️</title>
+
 <style>
 body{
   text-align:center;
   font-family:sans-serif;
-  margin-top:100px;
+  margin-top:80px;
 }
-button{
-  padding:10px 20px;
-  font-size:18px;
+
+h1{
+  color:#ff4d6d;
+}
+
+#game button{
+  font-size:32px;
+  background:none;
+  border:none;
+  cursor:pointer;
   margin:10px;
+}
+
+#message{
+  margin-top:40px;
+  font-size:28px;
+  color:#ff4d6d;
 }
 </style>
 </head>
 
 <body>
-<h1>เป็นแฟนกับเราไหม 💖</h1>
 
-<button onclick="yes()">Yes</button>
-<button id="no" onmouseover="move()">No</button>
+<h1>เก็บหัวใจให้ครบ 5 ดวง 💖</h1>
+
+<div id="game"></div>
+
+<div id="message"></div>
 
 <script>
-function yes(){
-  document.body.innerHTML="<h1>เย้! เราก็ชอบเธอ 🥰</h1>";
+let score = 0;
+const total = 5;
+
+function collect(){
+  score++;
+  if(score === total){
+    document.getElementById("message").innerHTML =
+      "You unlocked my heart 💘<br>เราชอบเธอนะ";
+  }
 }
 
-function move(){
-  const btn=document.getElementById("no");
-  btn.style.position="absolute";
-  btn.style.left=Math.random()*80+"%";
-  btn.style.top=Math.random()*80+"%";
+// สร้างหัวใจ
+for(let i=0;i<total;i++){
+  const heart = document.createElement("button");
+  heart.innerHTML = "❤️";
+  heart.onclick = function(){
+    collect();
+    heart.style.display = "none";
+  };
+  document.getElementById("game").appendChild(heart);
 }
 </script>
 

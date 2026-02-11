@@ -9,80 +9,125 @@ body{
   margin:0;
   height:100vh;
   overflow:hidden;
-  font-family:sans-serif;
-  background:#fff0f5;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(-45deg,#ff9a9e,#fad0c4,#fad0c4,#ffdde1);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+}
+
+@keyframes gradientBG{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
 h1{
   text-align:center;
   padding-top:20px;
-  color:#ff4d6d;
+  color:white;
+  text-shadow:0 0 10px rgba(255,255,255,0.8);
 }
 
 #timer{
   text-align:center;
-  font-size:18px;
-  color:#555;
+  font-size:20px;
+  color:white;
+  margin-bottom:20px;
 }
 
-.heart{
+.item{
   position:absolute;
-  font-size:36px;
-  background:none;
-  border:none;
+  font-size:40px;
+  cursor:pointer;
+  transition: transform 0.2s;
+  filter: drop-shadow(0 0 8px white);
+}
+
+.item:hover{
+  transform: scale(1.3);
 }
 
 #message{
   position:fixed;
   inset:0;
-  background:#fff0f5;
+  background:rgba(255,255,255,0.9);
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  font-size:22px;
+  font-size:26px;
   color:#ff4d6d;
   padding:30px;
+  backdrop-filter: blur(10px);
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Catch all the hearts 💖</h1>
-<div id="timer">Time left: 10</div>
+<h1>Catch all the love 💖</h1>
+<div id="timer">Time left: 15</div>
 
-<div id="message" style="display:none;"></div>
+<div id="message"></div>
 
 <script>
 let score = 0;
-let timeLeft = 10;
-const total = 7;
+let timeLeft = 15;
+const total = 10;
 
-function randomPos(){
-  return Math.random() * 80 + "%";
-}
+const items = [
+  "❤️",
+  "💖",
+  "<img src='Cat1.png' width='60'>",
+  "<img src='Cat2.png' width='60'>",
+  "<img src='Cat3.png' width='60'>",
+  "<img src='Cat4.png' width='60'>",
+  "<img src='Cat5.png' width='60'>"
+];
 
-function createHeart(){
-  const heart = document.createElement("button");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = randomPos();
-  heart.style.top = randomPos();
+function createItem(){
+  const el = document.createElement("div");
+  el.className = "item";
+  el.innerHTML = items[Math.floor(Math.random()*items.length)];
 
-  heart.onclick = () => {
+  el.style.left = Math.random()*90 + "vw";
+  el.style.top = Math.random()*90 + "vh";
+
+  let dx = (Math.random()*3)+1;
+  let dy = (Math.random()*3)+1;
+
+  if(Math.random()>0.5) dx *= -1;
+  if(Math.random()>0.5) dy *= -1;
+
+  function move(){
+    let x = el.offsetLeft;
+    let y = el.offsetTop;
+
+    if(x <= 0 || x >= window.innerWidth-50) dx *= -1;
+    if(y <= 0 || y >= window.innerHeight-50) dy *= -1;
+
+    el.style.left = x + dx + "px";
+    el.style.top = y + dy + "px";
+
+    requestAnimationFrame(move);
+  }
+
+  move();
+
+  el.onclick = () => {
     score++;
-    heart.remove();
+    el.remove();
     if(score === total){
       win();
     }
   };
 
-  document.body.appendChild(heart);
+  document.body.appendChild(el);
 }
 
 for(let i=0;i<total;i++){
-  createHeart();
+  createItem();
 }
 
 const timer = setInterval(()=>{
@@ -102,15 +147,15 @@ function win(){
     Happy Valentine’s Day 💘<br><br>
     I hope you feel better today.<br>
     And I hope… your Valentine can be me too.<br>
-    Love you na ka 🤍<br><br>
+    Love you na ka 🤍
   `);
 }
 
 function lose(){
   showMessage(`
-    It’s okay 🤍<br><br>
-    You can try again…<br>
-    I’ll still be here 💕
+    It's okay 🤍<br><br>
+    Try again…<br>
+    I'll still be here 💕
   `);
 }
 
